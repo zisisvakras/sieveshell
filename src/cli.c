@@ -62,6 +62,7 @@ int main(int argc, char **argv) {
         fprintf(stderr, "Couldn't get script\n");
         return 1;
     }
+    printf("%s", script);
 
     return 0;
 }

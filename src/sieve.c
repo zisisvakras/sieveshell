@@ -159,6 +159,7 @@ char *find_crlf(char *s) {
     while ((s = strchr(s, '\n'))) {
         if (s[-1] == '\r')
             return s - 1;
+        ++s;
     }
     return NULL;
 }
@@ -245,28 +246,15 @@ char *sieve_getscript(sieve_conn_t conn, char *name) {
         fatal("Failed to read script size\n");
     free(res);
 
-    char *script = malloc(to_read + 1);
-    
-    /* Check for buffer */
-    size_t had_before = min(conn->bufc, to_read);
-    if (had_before) {
-        memcpy(script, conn->buf + conn->bufidx, had_before);
-        conn->bufc -= had_before;
-        conn->bufidx += had_before;
-    }
-    script[had_before] = '\0';
+    char *script = sieve_readline(conn);
+    if (strlen(script) != to_read)
+        fatal("Bad script size\n");
 
-    /* Read rest */
-    if (to_read > had_before)
-        if (safe_read(conn->sfd, script + had_before, to_read - had_before))
-            pfatal("Error while reading script");
-
-    script[to_read] = '\0';
-    printf("%s\n", script);
     res = sieve_readline(conn);
-    res = sieve_readline(conn);
-    if (strncmp(res, "OK", 2)) fatal("Impossible value after GETSCRIPT\n");
+    if (strncmp(res, "OK", 2)) 
+        fatal("Impossible value after GETSCRIPT\n");
     free(res);
+
     return script;
 }
 
