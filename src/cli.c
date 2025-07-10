@@ -7,7 +7,7 @@
 #include "sieve.h"
 
 #define usage() do {fprintf(stderr,\
-                "Usage: %s -u username -p password [-a authname] -h hostname -P port\n",\
+                "Usage: %s -u username -p password [-a authname] hostname[:port] \n",\
                 argv[0]); exit(1);} while(0);
 
 int main(int argc, char **argv) {
@@ -31,19 +31,19 @@ int main(int argc, char **argv) {
             case 'p':
                 pass = optarg;
                 break;
-            case 'h':
-                host = optarg;
-                break;
-            case 'P':
-                port = optarg;
-                break;
             case '?':
                 usage();
             default:
                 abort();
         }
     }
-    if (optind != argc) usage();
+    if (optind != argc - 1) usage();
+
+    host = argv[optind];
+    port = strchr(argv[optind], ':');
+    if (port) *port++ = '\0';
+    else port = "2000";
+
     if (!auth || !pass || !host || !port) usage();
     if (!user) user = "";
     
