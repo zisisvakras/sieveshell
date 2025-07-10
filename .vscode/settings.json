@@ -1,0 +1,19 @@
+{
+    "files.associations": {
+        "tuple": "c",
+        "socket.h": "c",
+        "cyrus_ldap.h": "c",
+        "stdio.h": "c",
+        "string.h": "c",
+        "stdlib.h": "c",
+        "syslog.h": "c",
+        "unistd.h": "c",
+        "sieve_interface.h": "c",
+        "typeinfo": "c",
+        "config.h": "c",
+        "atomic": "cpp",
+        "message_guid.h": "c",
+        "message.h": "c",
+        "stdarg.h": "c"
+    }
+}

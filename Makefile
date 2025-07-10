@@ -1,4 +1,4 @@
-TARGET_EXEC := sieveshell
+TARGET_EXEC := sievecli
 
 BUILD_DIR := ./target
 SRC_DIRS := ./src

@@ -3,29 +3,19 @@
 
 #include <unistd.h>
 
+typedef struct sieve_conn_t *sieve_conn_t;
+
 /* Obtain server descriptor */
-int connect_tcp(char *server, char *port);
+sieve_conn_t sieve_connect(char *server, char *port);
 
-/**
- *  Safely reads from fd and stores it in buffer.
- *  Returns 0 on success.
- *  Returns -1 on error and sets errno.
- *  Returns -2 on mid-read EOF.
- */
-ssize_t safe_read(int fd, void *buffer, size_t size);
+void sieve_send(sieve_conn_t conn, char *format, ...);
 
-/**
- *  Safely writes to fd from buffer.
- *  Returns size on success.
- *  Returns -1 on error and sets errno.
- */
-ssize_t safe_write(int fd, const void *buffer, size_t size);
+int sieve_auth(sieve_conn_t conn, char *user, char *auth, char *pass);
 
-/**
- *  Safely writes to fd a formatted string.
- *  Returns 0 on success.
- *  Returns -1 on error and sets errno.
- */
-ssize_t safe_writef(int fd, char *format, ...);
+char *sieve_readline(sieve_conn_t conn);
+
+void sieve_dumplines(sieve_conn_t conn);
+
+char *sieve_getscript(sieve_conn_t conn, char *name);
 
 #endif // WRAPS_H_
